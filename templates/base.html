@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- CSS file -->
+    <link rel="stylesheet" type="text/css" href="{% static 'mystyle.css' %}">
+
+    <title>Careers Website</title>
+
+</head>
+<body>
+    <!--Navigation bar-->
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+              <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+              <a class="nav-item nav-link" href="{% url 'admin:index' %}">Administrator</a>
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              <a class="nav-item nav-link" href="{% url 'list' %}">Candidates</a>
+              <a class="nav-item nav-link" href="{% url 'interviews' %}">Interviews</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+               {% if user.is_authenticated %}
+                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+               {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+               {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages%}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+{% block content %}
+            {% if user.is_authenticated%}
+            <h1>Welcome!!</h1>
+                <div class="content-section">
+                    <p>Read the section down to use this website.</p>
+                </div>
+            {% else %}
+            <h1>Authentication required!</h1>
+                <div class="content-section">
+                    <p  >Please Log In first, then go to register to add new candidates, then check interviews to schedule an interview!</p>
+                </div>
+            {% endif %}
+
+
+            <div class="content-section">
+                <h3>Candidates data management page</h3>
+                    <ul class="text-muted">
+                        <li>To log in to the administrator page click on //Administrator//</li>
+                        <li>To add new candidates to the database click on //Register//</li>
+                        <li>To view a list of existant candidates click on //Candidates//</li>
+                        <li>To check this month's interviews schedule or book one click on //Interviews//</li>
+                        <li>All the resumes are stored in the media folder</li>
+                    </ul>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>Zfusion</h3>
+            <p class='text-muted'>This is a candidate management website for our company, log in with username: zfusion password: 789+456+123.
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Email: hr@zfusion.com</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

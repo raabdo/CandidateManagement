@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Log in:</h1>
+<div class="content-section">
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Join us</legend>
+            {{ form.as_p }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit" value="submit" >Login</button>
+        </div>
+
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            You don't have an account? Please contact the HR office.
+        </small>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% if all_candidates%}
+    <h1>Candidates list</h1>
+    <div class="content-section">
+
+            <p>
+                Here's a list of the candidates in our database, to modify data or check further details on the candidates please check the admin page
+                ==><a class="ml-2" href="{% url 'admin:index' %}">Admin</a>
+            </p>
+            <ul class="list-group">
+            {% for candidate in all_candidates %}
+                    <li class="list-group-item text-muted">{{candidate.name}} //{{candidate.gender}} //{{candidate.email}}
+                        //+86{{candidate.phone}} </li>
+            {% endfor %}
+            </ul>
+    </div>
+
+    {% else %}
+    <h1>Candidates list</h1>
+    <div class="content-section">
+            <p>
+                No candidates to display, click on Register to add new candidates ==><a class="ml-2" href="{% url 'register' %}">Register</a>
+            </p>
+    </div>
+    {% endif %}
+
+{% else %}
+<h1>Access refused! Please Log In:</h1>
+    <div class="content-section">
+        <small class="text-muted">
+            Impossible to view candidates list, please login first ==> <a class="ml-2" href="{% url 'login' %}">Login</a>
+        </small>
+    </div>
+{% endif %}
+
+{% endblock content %}

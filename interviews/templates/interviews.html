@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Interviews</h1>
+    <div class="content-section">
+
+        <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Book an interview for registered candidates</legend>
+                {{ form.as_p }}
+            </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit" value="submit" >Submit</button>
+        </div>
+
+    </form>
+        <div>
+            <small class="text-muted">
+                    To check the schedule of all interviews ==> <a class="ml-2" href="{% url 'schedule' %}">Schedule</a>
+            </small>
+        </div>
+    </div>
+{% else %}
+<h1>Access refused! Please Log In:</h1>
+<div class="content-section">
+        <small class="text-muted">
+            Impossible to book interviews, please login first ==> <a class="ml-2" href="{% url 'login' %}">Login</a>
+        </small>
+    </div>
+{% endif %}
+{% endblock content %}
