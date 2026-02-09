@@ -9,7 +9,7 @@ def get_upload_path(instance, filename):
          candidate_name=instance.name, name1=name1, name2=name2)
     return file_path
 
-class candidate(models.Model):
+class Candidate(models.Model):
     name = models.CharField(max_length=100, unique=True)
     phone= models.CharField(max_length=12, unique=True)
     email = models.EmailField(unique=True)

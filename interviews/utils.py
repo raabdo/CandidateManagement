@@ -1,48 +1,46 @@
-from datetime import datetime, timedelta
 from calendar import HTMLCalendar
-from interviews.models import interview
-from time import strftime
 
-
+from interviews.models import Interview
 
 
 class Schedule(HTMLCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
-        self.month =month
+        self.month = month
         super(Schedule, self).__init__()
-    #formats a day as a td
-    #filters events by day
-    def formatday(self, day, interview):
-        interviews_per_day = interview.filter(date__day= day)
-        d=''
 
+    def formatday(self, day, interviews):
+        interviews_per_day = interviews.filter(date__day=day)
+        d = ''
         for interview in interviews_per_day:
-            d+= f'<br>{interview.candidate.name}</br>' \
-                f'<br>Time: {interview.date.strftime("%H:%M")}</br>'
+            # Using a span for time and a strong tag for the name
+            d += (
+                f'<li class="calendar-event">'
+                f'<span class="event-time">{interview.date.strftime("%H:%M")}</span>'
+                f'<span class="event-name">{interview.candidate.name}</span>'
+                f'</li>'
+            )
 
-        if day!=0:
-            return f'<td><span class="date">{day}</span><ul>{d}</ul></td>'
-        return'<td></td>'
+        if day != 0:
+            # Highlight today if it matches (optional logic can be added here)
+            return f'<td class="day"><span class="day-number">{day}</span><ul class="event-list">{d}</ul></td>'
+        return '<td class="empty"></td>'
 
-
-    #formats a week as a tr
-    def formatweek(self, theweek, interview):
-        week='\n'
+    def formatweek(self, theweek, interviews):
+        week = ''
         for d, weekday in theweek:
-            week+= self.formatday(d, interview)
-        return f'<tr> {week} </tr>'
+            week += self.formatday(d, interviews)
+        return f'<tr>{week}</tr>'
 
-
-    #formats a month as a table
     def formatmonth(self, withyear=True):
-        interviews = interview.objects.filter(date__year=self.year, date__month=self.month)
+        interviews = Interview.objects.filter(date__year=self.year, date__month=self.month)
 
-        sc= f'<table border="0" cellpadding="0" cellspacing="5" class="schedule">\n'
-        sc+=f'{self.formatmonthname(self.year, self.month, withyear= withyear)}\n'
-        sc+=f'{self.formatweekheader()}\n'
+        # Modernized table headers and classes
+        sc = f'<table class="calendar-table">\n'
+        sc += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+        sc += f'{self.formatweekheader()}\n'
 
         for week in self.monthdays2calendar(self.year, self.month):
-                sc+= f'{self.formatweek(week, interviews)}\n'
+            sc += f'{self.formatweek(week, interviews)}\n'
+        sc += '</table>'
         return sc
-

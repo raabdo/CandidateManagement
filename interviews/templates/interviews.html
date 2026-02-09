@@ -1,33 +1,99 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container py-4">
+    {% if user.is_authenticated %}
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
 
-{% if user.is_authenticated %}
-    <h1>Interviews</h1>
-    <div class="content-section">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">Book an Interview</h2>
+                    <p class="text-muted">Schedule a time slot for a registered candidate.</p>
+                </div>
+                <a href="{% url 'schedule' %}" class="btn btn-primary d-none d-sm-block">
+                    <i class="bi bi-calendar3 me-2"></i>View Schedule
+                </a>
+            </div>
 
-        <form enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Book an interview for registered candidates</legend>
-                {{ form.as_p }}
-            </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit" value="submit" >Submit</button>
-        </div>
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-4 p-md-5">
+                    <form enctype="multipart/form-data" method="POST" class="needs-validation">
+                        {% csrf_token %}
 
-    </form>
-        <div>
-            <small class="text-muted">
-                    To check the schedule of all interviews ==> <a class="ml-2" href="{% url 'schedule' %}">Schedule</a>
-            </small>
+                        <div class="mb-4 pb-2 border-bottom">
+                            <h5 class="card-title fw-semibold">Interview Details</h5>
+                        </div>
+
+                        <div class="booking-form">
+                            {{ form.as_p }}
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-success btn-lg fw-bold shadow-sm" type="submit">
+                                Confirm Interview Booking
+                            </button>
+                            <a href="{% url 'schedule' %}" class="btn btn-link text-muted d-sm-none">
+                                View Full Schedule
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-light rounded-3 border d-flex align-items-center">
+                <div class="badge bg-info-subtle text-info p-2 me-3">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+                <small class="text-secondary">
+                    Don't see a candidate? Make sure they are <a href="{% url 'register' %}" class="fw-bold">registered</a> first.
+                </small>
+            </div>
+
         </div>
     </div>
-{% else %}
-<h1>Access refused! Please Log In:</h1>
-<div class="content-section">
-        <small class="text-muted">
-            Impossible to book interviews, please login first ==> <a class="ml-2" href="{% url 'login' %}">Login</a>
-        </small>
+
+    {% else %}
+    <div class="row justify-content-center text-center py-5">
+        <div class="col-md-6">
+            <div class="mb-4">
+                <i class="bi bi-shield-lock text-danger" style="font-size: 4rem;"></i>
+            </div>
+            <h2 class="fw-bold">Authentication Required</h2>
+            <p class="text-muted mb-4">You must be logged in to access the interview scheduling system.</p>
+            <a class="btn btn-dark btn-lg px-5 shadow" href="{% url 'login' %}">Login to Zfusion</a>
+        </div>
     </div>
-{% endif %}
+    {% endif %}
+</div>
+
+<style>
+    .booking-form p {
+        margin-bottom: 1.25rem;
+    }
+    .booking-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #475569;
+    }
+    .booking-form input, .booking-form select, .booking-form textarea {
+        display: block;
+        width: 100%;
+        padding: 0.625rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #1e293b;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .booking-form input:focus {
+        border-color: #38bdf8;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+    }
+</style>
 {% endblock content %}

@@ -1,7 +1,7 @@
 from rest_framework import generics
 from candidates.models import candidate
 from api.serializers import candidateSerializer
-from interviews.models import interview
+from interviews.models import Interview
 from api.serializers import interviewSerializer
 
 # Create your views here.
@@ -12,5 +12,5 @@ class candidateApiView(generics.ListAPIView):
 
 
 class interviewApiView(generics.ListAPIView):
-    queryset = interview.objects.all()
+    queryset = Interview.objects.all()
     serializer_class = interviewSerializer

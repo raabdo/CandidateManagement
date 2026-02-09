@@ -21,7 +21,7 @@ from django.conf.urls import  include
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/',  admin.site.urls, name= 'admin'),
+    path('admin/', admin.site.urls),
     path('', include('recruit.urls'), name = 'recruit'),
     path('login/', usrview.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', usrview.LogoutView.as_view(template_name='logout.html'), name='logout'),

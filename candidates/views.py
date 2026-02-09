@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from candidates.forms import CandidateRegister
 from django.contrib import messages
-from candidates.models import candidate
+from candidates.models import Candidate
 
 # Create your views here.
 
@@ -12,7 +12,7 @@ def register (request):
         if form.is_valid():
             form.save()
             name = form.cleaned_data.get('name')
-            messages.success(request,('Candidate {0} created').format(name))
+            messages.success(request, 'Candidate {0} created'.format(name))
             return redirect('home')
     else:
         form = CandidateRegister()
@@ -21,8 +21,8 @@ def register (request):
 
 
 #displays a list of all candidates
-def list(request):
-    all_candidates = candidate.objects.all()
+def candidate_list(request):
+    all_candidates = Candidate.objects.all()
     context={'all_candidates': all_candidates}
     return render(request, 'candidates/list.html', context)
 

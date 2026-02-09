@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from candidates.models import candidate
-from interviews.models import interview
+from interviews.models import Interview
 
 
 class candidateSerializer(serializers.ModelSerializer):
@@ -11,5 +11,5 @@ class candidateSerializer(serializers.ModelSerializer):
 
 class interviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = interview
+        model = Interview
         fields = ('candidate', 'date', 'interviewer', 'position')

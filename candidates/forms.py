@@ -1,9 +1,7 @@
-from distutils.command import upload
 
 from django import forms
-from candidates.models import candidate
-from django_countries import countries
-from django_countries.fields import LazyTypedChoiceField
+from candidates.models import Candidate
+from django_countries.fields import CountryField
 
 
 class CandidateRegister(forms.ModelForm):
@@ -13,10 +11,10 @@ class CandidateRegister(forms.ModelForm):
     email= forms.EmailField(max_length=100, required=True)
     cv = forms.FileField()
     gender = forms.ChoiceField(choices=(('',''),('male','Male'),('female', 'Female')))
-    country = LazyTypedChoiceField(choices=countries)
+    country = CountryField().formfield()
 
     class Meta:
-        model = candidate
+        model = Candidate
         fields= ('name', 'phone', 'email', 'cv', 'gender', 'country')
 
 

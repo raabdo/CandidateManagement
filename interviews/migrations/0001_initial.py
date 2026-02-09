@@ -18,7 +18,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('booked', models.BooleanField()),
-                ('name', models.ForeignKey(on_delete=True, to='candidates.candidate')),
+                # Fix: Change 'True' to 'models.CASCADE'
+                # Fix: Change 'candidate' to 'Candidate'
+                ('name', models.ForeignKey(on_delete=models.CASCADE, to='candidates.Candidate')),
             ],
         ),
     ]

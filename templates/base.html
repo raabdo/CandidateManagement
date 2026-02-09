@@ -1,45 +1,74 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-
-<html>
+{% load static %}
+<html lang="en">
 <head>
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- CSS file -->
-    <link rel="stylesheet" type="text/css" href="{% static 'mystyle.css' %}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 80px; /* Offset for fixed navbar */
+        }
+        .navbar {
+            background-color: #1e293b !important; /* Slate Dark */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .content-section {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .sidebar-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .nav-link { font-weight: 500; transition: color 0.3s; }
+        .nav-link:hover { color: #38bdf8 !important; }
+        .alert { border-radius: 8px; border: none; }
+    </style>
 
-    <title>Careers Website</title>
-
+    <title>Zfusion | Candidate Management</title>
 </head>
 <body>
-    <!--Navigation bar-->
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+             <span style="color: #38bdf8;">Z</span>fusion
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle">
+            <span class="navbar-toggler-icon"></span>
           </button>
+
           <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
-              <a class="nav-item nav-link" href="{% url 'admin:index' %}">Administrator</a>
-              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-              <a class="nav-item nav-link" href="{% url 'list' %}">Candidates</a>
-              <a class="nav-item nav-link" href="{% url 'interviews' %}">Interviews</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'list' %}">Candidates</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'interviews' %}">Interviews</a></li>
+            </ul>
+
+            <div class="navbar-nav align-items-center">
                {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url 'admin:index' %}">Admin Panel</a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link btn btn-link text-white" style="display: inline; cursor: pointer;">
+                        Logout
+                    </button>
+                </form>
                {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-primary btn-sm px-4" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link ms-2" href="{% url 'register' %}">Sign Up</a>
                {% endif %}
             </div>
           </div>
@@ -47,62 +76,69 @@
       </nav>
     </header>
 
-    <main role="main" class="container">
+    <main class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             {% if messages %}
-                {% for message in messages%}
-                    <div class="alert alert-{{ message.tags }}">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                         {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-
                 {% endfor %}
             {% endif %}
-{% block content %}
-            {% if user.is_authenticated%}
-            <h1>Welcome!!</h1>
+
+            {% block content %}
                 <div class="content-section">
-                    <p>Read the section down to use this website.</p>
+                    {% if user.is_authenticated %}
+                        <h2 class="mb-3">Welcome back, {{ user.username }}!</h2>
+                        <p class="text-secondary">Manage your recruitment pipeline efficiently from this dashboard.</p>
+                    {% else %}
+                        <h2 class="mb-3">Recruitment Access Required</h2>
+                        <div class="p-3 bg-light border-start border-primary border-4 rounded">
+                            <p class="mb-0">Please log in to register candidates or schedule interviews.</p>
+                        </div>
+                    {% endif %}
                 </div>
-            {% else %}
-            <h1>Authentication required!</h1>
+
                 <div class="content-section">
-                    <p  >Please Log In first, then go to register to add new candidates, then check interviews to schedule an interview!</p>
+                    <h4 class="mb-4">Getting Started</h4>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="p-3 border rounded">
+                                <h6>Registration</h6>
+                                <small class="text-muted">Add new applicant profiles to the system.</small>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 border rounded">
+                                <h6>Scheduling</h6>
+                                <small class="text-muted">Book and track interview time slots.</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
-
-
-            <div class="content-section">
-                <h3>Candidates data management page</h3>
-                    <ul class="text-muted">
-                        <li>To log in to the administrator page click on //Administrator//</li>
-                        <li>To add new candidates to the database click on //Register//</li>
-                        <li>To view a list of existant candidates click on //Candidates//</li>
-                        <li>To check this month's interviews schedule or book one click on //Interviews//</li>
-                        <li>All the resumes are stored in the media folder</li>
-                    </ul>
-            </div>
-
-
+            {% endblock %}
         </div>
 
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Zfusion</h3>
-            <p class='text-muted'>This is a candidate management website for our company, log in with username: zfusion password: 789+456+123.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Email: hr@zfusion.com</li>
-              </ul>
-            </p>
+        <div class="col-lg-4">
+          <div class="sidebar-card">
+            <h5 class="mb-3">Zfusion HR</h5>
+            <p class="small opacity-75">Internal portal for candidate evaluation and tracking.</p>
+            <hr class="opacity-25">
+            <div class="d-flex align-items-center">
+                <div class="badge bg-primary p-2 me-2">HR Support</div>
+                <span class="small">hr@zfusion.com</span>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 border rounded bg-white small text-muted">
+            <strong>Dev Note:</strong> All resumes are securely stored in the <code>/media/</code> directory.
           </div>
         </div>
       </div>
     </main>
-{% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

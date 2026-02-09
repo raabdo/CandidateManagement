@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 
-from interviews.models import interview
+from interviews.models import Interview
 from interviews.forms import InterviewsRegister
 from interviews.utils import Schedule
 
@@ -29,7 +29,7 @@ def interviews(request):
 
 # Schedule view
 class ScheduleView(generic.ListView):
-    model = interview
+    model = Interview
     template_name = 'schedule.html'
 
     def get_context_data(self, **kwargs):

@@ -1,12 +1,12 @@
 from django.db import models
-from candidates.models import candidate
+from candidates.models import Candidate
 from django.utils import timezone
 
 # Create your models here.
 
 
-class interview(models.Model):
-    candidate= models.OneToOneField(candidate, on_delete=models.CASCADE)
+class Interview(models.Model):
+    candidate= models.OneToOneField(Candidate, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now, unique=True)
     interviewer = models.CharField(max_length=50, default='Zhang')
     position = models.CharField(max_length=50, default='Machine Learning engineer')

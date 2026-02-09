@@ -1,11 +1,107 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
 
+/* Container Table */
+.calendar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    table-layout: fixed; /* Ensures all columns are equal width */
+}
+
+/* Month Name Header */
+.month {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+    background: #1e293b;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Day Names (Mon, Tue, etc.) */
+.calendar-table th {
+    background: #f8f9fa;
+    color: #64748b;
+    font-weight: 600;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Individual Day Cells */
+.calendar-table td {
+    height: 120px; /* Fixed height for a square look */
+    vertical-align: top;
+    padding: 10px;
+    border-right: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
+}
+
+.calendar-table td:hover:not(.empty) {
+    background: #fbfcfe;
+}
+
+/* Day Number Style */
+.day-number {
+    font-weight: 600;
+    color: #1e293b;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Event List Container */
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual Interview "Pill" */
+.calendar-event {
+    background: #e0f2fe; /* Light Blue */
+    border-left: 4px solid #38bdf8; /* Bright Blue Accent */
+    color: #0369a1;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-time {
+    font-weight: 700;
+    color: #0284c7;
+}
+
+.event-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Empty/Buffer cells */
+.empty {
+    background: #fcfcfc;
+}
+
+</style>
 <h3>To change interview date or cancel log in to admin page</h3>
 <div class="content-section">
-    {{ schedule }}
+    <h3>Interview Schedule</h3>
+    <div class="table-responsive">
+        {{ schedule | safe }}
+    </div>
 </div>
-
 
 
 {% endblock %}
